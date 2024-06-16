@@ -8,17 +8,21 @@
       $myusername = mysqli_real_escape_string($db,$_POST['username']);
       $mypassword = mysqli_real_escape_string($db,$_POST['password']); 
 
-      $sql = "SELECT * FROM users WHERE username = '$myusername' and passcode = '$mypassword'";
+      $sql = "SELECT * FROM users WHERE username = '$myusername' ";
 
       $result = mysqli_query($db,$sql);      
       $row = mysqli_num_rows($result);      
       $count = mysqli_num_rows($result);
-
-      if($count == 1) {
+$row1 = $result->fetch_assoc();
+ $hash=$row1["passcode"];
+echo $hash;
+$verify = password_verify($mypassword, $hash); 
+echo $verify;
+      if($verify) {
 	  
          // session_register("myusername");
          $_SESSION['login_user'] = $myusername;
-         header("location: welcome.php");
+         header("location: welcomeU.php");
       } else {
          $error = "Your Login Name or Password is invalid";
       }
